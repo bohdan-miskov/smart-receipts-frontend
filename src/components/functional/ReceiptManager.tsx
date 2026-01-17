@@ -3,6 +3,7 @@ import type { Receipt } from '../../lib/types';
 import { receiptService } from '../../lib/api';
 import { Button } from '../common/Button';
 import { SkeletonCard } from '../ui/SkeletonCard';
+import { ReceiptCard } from '../ui/ReceiptCard';
 
 export const ReceiptManager = () => {
   const [receipts, setReceipts] = useState<Receipt[]>([]);
@@ -37,21 +38,16 @@ export const ReceiptManager = () => {
   };
 
   const processFile = async (file: File) => {
-    // if (!e?.target.files?.[0]) return;
-
-    // const file = e.target.files[0];
-
     try {
       setUploading(true);
       const { uploadUrl } = await receiptService.getUploadUrl();
       await receiptService.uploadToS3(uploadUrl, file);
 
-      setTimeout(() => fetchReceipts(), 5000);
+      setTimeout(() => fetchReceipts(), 10000);
     } catch (err) {
       alert('Error uploading file');
     } finally {
       setUploading(false);
-      // e.target.value = '';
     }
   };
 
@@ -139,56 +135,8 @@ export const ReceiptManager = () => {
                   </li>
                 ))
               : receipts.map((receipt) => (
-                  <li key={receipt.id}>
-                    <article className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
-                      <header className="flex justify-between items-start mb-4">
-                        <div>
-                          <h3 className="font-semibold text-slate-800">
-                            <time dateTime={receipt.createdAt}>
-                              {new Date(receipt.createdAt).toLocaleDateString()}
-                            </time>
-                          </h3>
-                          <p className="text-xs text-slate-400">
-                            <time dateTime={receipt.createdAt}>
-                              {new Date(receipt.createdAt).toLocaleTimeString()}
-                            </time>
-                          </p>
-                        </div>
-                        <span
-                          className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-medium"
-                          role="status"
-                          aria-label="Status: AI Processed"
-                        >
-                          AI Processed
-                        </span>
-                      </header>
-
-                      <div className="space-y-3 flex-grow">
-                        <p
-                          className="text-xs text-slate-500 truncate"
-                          title={receipt.fileName}
-                        >
-                          <span className="sr-only">File name:</span>
-                          📄 {receipt.fileName}
-                        </p>
-
-                        <details className="group">
-                          <summary className="text-sm text-blue-600 cursor-pointer font-medium hover:text-blue-700 list-none flex items-center gap-1">
-                            <span
-                              className="group-open:rotate-90 transition-transform"
-                              aria-hidden="true"
-                            >
-                              ▶
-                            </span>
-                            View Extracted Text
-                          </summary>
-                          <div className="mt-2 bg-slate-900 text-slate-50 p-3 rounded-lg text-xs font-mono overflow-x-auto max-h-32">
-                            {receipt.detectedText?.join('\n') ||
-                              'No text detected'}
-                          </div>
-                        </details>
-                      </div>
-                    </article>
+                  <li key={receipt.id} className="h-full">
+                    <ReceiptCard receipt={receipt} />
                   </li>
                 ))}
           </ul>

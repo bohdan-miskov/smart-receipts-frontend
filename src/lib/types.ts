@@ -1,8 +1,14 @@
 export type Receipt = {
   id: string;
   fileName: string;
-  detectedText: string[];
+  status: 'PROCESSING' | 'PROCESSED' | 'ERROR';
   createdAt: string;
+
+  vendor?: string;
+  total?: number;
+  currency?: string;
+  date?: string;
+  items?: string[];
 };
 
 export type ReceiptsResponse = {
