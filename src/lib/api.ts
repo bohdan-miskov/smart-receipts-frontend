@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { ReceiptsResponse, UploadResponse } from './types';
+import { fetchAuthSession } from 'aws-amplify/auth';
 
 const API_URL = import.meta.env.PUBLIC_API_URL;
 
@@ -8,6 +9,21 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+});
+
+apiClient.interceptors.request.use(async (config) => {
+  try {
+    const session = await fetchAuthSession();
+    const token = session.tokens?.idToken?.toString();
+
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  } catch (error) {
+    console.debug('No auth session found', error);
+  }
+
+  return config;
 });
 
 export const receiptService = {
