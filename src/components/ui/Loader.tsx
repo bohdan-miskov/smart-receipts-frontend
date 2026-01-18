@@ -1,30 +1,27 @@
-interface LoaderProps extends React.HTMLAttributes<HTMLSpanElement> {
-  sizes: {
-    w: number;
-    h: number;
-  };
+interface LoaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  size: number;
   color?: string;
+  label?: string;
 }
 
 export const Loader: React.FC<LoaderProps> = ({
-  children,
-  sizes,
+  size,
   color = 'currentColor',
+  label,
   className = '',
+  ...props
 }) => {
-  const baseStyles =
-    'px-6 py-3 rounded-full font-semibold transition-all transform hover:-translate-y-0.5 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed';
-
-  const variants = {
-    primary:
-      'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/30',
-    secondary: 'bg-slate-200 text-slate-800 hover:bg-slate-300',
-  };
+  const textSize = Math.max(12, Math.floor(size * 0.4));
 
   return (
-    <span className={`${className} flex items-center gap-2`}>
+    <div
+      {...props}
+      className={`flex items-center gap-2 ${className}`}
+      style={{ height: size }}
+    >
       <svg
-        className={`animate-spin h-${sizes.h} w-${sizes.w}`}
+        className="animate-spin shrink-0"
+        style={{ width: size, height: size }}
         viewBox="0 0 24 24"
       >
         <circle
@@ -42,7 +39,12 @@ export const Loader: React.FC<LoaderProps> = ({
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
         />
       </svg>
-      {children ?? 'Processing...'}
-    </span>
+
+      {label && (
+        <span style={{ fontSize: textSize }} className="font-medium">
+          {label}
+        </span>
+      )}
+    </div>
   );
 };

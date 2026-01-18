@@ -28,11 +28,7 @@ export const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       disabled={isLoading || props.disabled}
     >
-      {isLoading ? (
-        <Loader sizes={{ h: 5, w: 5 }}>Processing...</Loader>
-      ) : (
-        children
-      )}
+      {isLoading ? <Loader size={5} label="Processing..." /> : children}
     </button>
   );
 };
