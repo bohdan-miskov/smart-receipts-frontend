@@ -36,6 +36,10 @@ export const ReceiptCard: React.FC<ReceiptCardProps> = ({ receipt }) => {
             <span className="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded-full border border-emerald-100">
               AI PROCESSED
             </span>
+          ) : receipt.status === 'ERROR' ? (
+            <span className="bg-red-50 text-red-700 text-[10px] font-bold px-2 py-1 rounded-full border border-red-100">
+              ERROR
+            </span>
           ) : (
             <span className="bg-amber-50 text-amber-600 text-[10px] font-bold px-2 py-1 rounded-full animate-pulse">
               ANALYZING...
