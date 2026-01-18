@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ReceiptsResponse, UploadResponse } from './types';
+import type { StatsData, ReceiptsResponse, UploadResponse } from './types';
 import { fetchAuthSession } from 'aws-amplify/auth';
 
 const API_URL = import.meta.env.PUBLIC_API_URL;
@@ -41,5 +41,10 @@ export const receiptService = {
     await axios.put(url, file, {
       headers: { 'Content-Type': file.type },
     });
+  },
+
+  getStats: async () => {
+    const { data } = await apiClient.get<StatsData>('/stats');
+    return data;
   },
 };

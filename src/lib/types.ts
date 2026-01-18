@@ -19,3 +19,10 @@ export type UploadResponse = {
   uploadUrl: string;
   key: string;
 };
+
+export type StatsData = {
+  currencyList: { code: string; amount: number }[];
+  receiptsCount: number;
+  topVendors: { name: string; amount: number }[];
+  chartData: { date: string; amount: number }[];
+};
