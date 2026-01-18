@@ -1,0 +1,28 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { AuthWrapper } from '../components/functional/AuthWrapper';
+import { FullStatistics } from '../components/functional/FullStatistics';
+---
+
+<Layout title="Statistics | Smart Receipts">
+    <AuthWrapper client:only="react">
+      <div class="p-8 bg-slate-50 min-h-full">
+        <div class="max-w-7xl mx-auto">
+          <section class="mb-8 flex justify-between items-center">
+            <div>
+              <h1 class="text-3xl font-bold text-slate-900">Financial Insights</h1>
+              <p class="text-slate-500 mt-1">Detailed breakdown of your expenses</p>
+            </div>
+            <a 
+              href="/" 
+              class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 px-4 py-2 rounded-lg transition-colors"
+            >
+              ← Back to Receipts
+            </a>
+          </section>
+  
+          <FullStatistics client:load />
+        </div>
+      </div>
+    </AuthWrapper>
+  </Layout>
